@@ -5,5 +5,6 @@ module.exports =  (router,usermanagementmethods) => {
     router.get('/getAccountDetails',usermanagementmethods.getAccountDetails)
     router.get('/getCustomerDetails',usermanagementmethods.getCustomerDetails)
     router.get('/getUserDetails',usermanagementmethods.getUserDetails)
+    router.post('/updatePassword',usermanagementmethods.updatePassword)
     return router
 }

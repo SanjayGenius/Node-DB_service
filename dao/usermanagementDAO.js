@@ -7,7 +7,8 @@ module.exports =  {
     checkCustomerCount : checkCustomerCount,
     getAccountDetails:getAccountDetails,
     getCustomerDetails:getCustomerDetails,
-    getUserDetails:getUserDetails
+    getUserDetails:getUserDetails,
+    updatePassword:updatePassword
 }
 
 function addAccountDetails(data){
@@ -55,6 +56,18 @@ function addUsers(data){
     }catch(err){
         throw err;
     }
+}
+function updatePassword(data){
+    try{
+        var query="update user_details set activation_flag=0,password='"+data.password+"' where login_id='"+data.loginId+"'";
+        return new Promise((resolve, reject) => {
+          connection.query(query).then((result)=> {
+              resolve(result);
+            });
+        });	
+      }catch(err){
+        throw err;
+      }
 }
 function checkCount(tableName,data){
     try{

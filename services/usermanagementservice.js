@@ -5,7 +5,8 @@ module.exports =  {
     addUser : addUser,
     getAccountDetails:getAccountDetails,
     getCustomerDetails:getCustomerDetails,
-    getUserDetails:getUserDetails
+    getUserDetails:getUserDetails,
+    updatePassword:updatePassword
 }
 function addAccountDetails(req,res){
     if(req.body.accountName!=''&&req.body.accountName!=null){
@@ -169,4 +170,24 @@ function getUserDetails(req,res){
     }else{
         res.send(finalResult);
     }
+}
+function updatePassword(req,res){
+    var finalResult={
+        "status" : "Failure",
+        "message" : "Error while updating password"
+    }
+    if(req.body.loginId!=null&&req.body.password!=null){
+        return usermanagementDAO.updatePassword(req.body).then(function (response){
+            if(response===undefined){
+                res.send(finalResult);
+            }else{
+                finalResult={  
+                    "status" : "Success",
+                    "message" : "Password updated Successfully"
+                }
+            }
+        })
+    }else
+        res.send(finalResult);
+    
 }
