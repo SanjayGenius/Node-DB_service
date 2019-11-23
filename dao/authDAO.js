@@ -6,7 +6,7 @@ module.exports =  {
   }
   function checkCredentials(data){
     try{
-      var query="Select * from user_details where login_id='"+data.loginId+"' and password='"+data.password+"'";
+      var query="Select * from user_details where login_id='"+data.loginId+"'";
       return new Promise((resolve, reject) => {
         connection.query(query).then((result)=> {
             resolve(result);

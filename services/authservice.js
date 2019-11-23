@@ -11,22 +11,16 @@ function login(req,res){
 		return authDAO.checkCredentials(req.body).then(function (response){
 			console.log(response[0])
 			if(response[0]!=null){
-				if(response[0].activation_flag!=0){
 					finalResult={
 						"status" : "Success",
-						"data" : "Logged in Successfully",
-						"result" : response[0]
+						"message" : "Valid loginId",
+						"data" : response[0]
 					}
-				}else{
-					finalResult={
-						"status" : "Failure",
-						"data" : "Account not activated",
-					}
-				}
+				
 			}else{
 				finalResult={
 					"status" : "Failure",
-					"data" : "Invalid Credentials"
+					"message" : "Invalid Credentials"
 				}
 			}
 			res.send(finalResult);
@@ -34,7 +28,7 @@ function login(req,res){
 	}else{
 		finalResult={
 			"status" : "Failure",
-			"data" : "Invalid Request"
+			"message" : "Invalid Request"
 		}
 		res.send(finalResult);
 	}
@@ -50,12 +44,12 @@ function updateActivationFlag(req,res){
 					if(accountResponse.affectedRows>0){
                         finalResult={
                             "status" : "Success",
-                            "data" : "Account activated successfully",
+                            "message" : "Account activated successfully",
                         }
                     }else{
                         finalResult={
                             "status" : "Failure",
-                            "data" : "Error occured while activating account"
+                            "message" : "Error occured while activating account"
                         }
                     }
                     res.send(finalResult);
@@ -63,7 +57,7 @@ function updateActivationFlag(req,res){
 			}else{
 				finalResult={
 					"status" : "Failure",
-					"data" : "This account has been already activated."
+					"message" : "This account has been already activated."
 				}
 			}
 			res.send(finalResult);
@@ -71,7 +65,7 @@ function updateActivationFlag(req,res){
 	}else{
         finalResult={
             "status" : "Failure",
-            "data" : "Error occured while creating account"
+            "message" : "Error occured while creating account"
         }
         res.send(finalResult);
     }

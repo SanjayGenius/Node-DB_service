@@ -4,7 +4,10 @@ module.exports =  {
     addCustomerDetails : addCustomerDetails,
     addUsers : addUsers,
     checkCount : checkCount,
-    checkCustomerCount : checkCustomerCount
+    checkCustomerCount : checkCustomerCount,
+    getAccountDetails:getAccountDetails,
+    getCustomerDetails:getCustomerDetails,
+    getUserDetails:getUserDetails
 }
 
 function addAccountDetails(data){
@@ -70,6 +73,45 @@ function checkCount(tableName,data){
 function checkCustomerCount(data){
     try{
         var query="SELECT count(*) as total FROM customer_details where name = '"+data.customerName+"' and account_id='"+data.accountId+"'"
+        console.log(query)
+        return new Promise((resolve, reject) => {
+            connection.query(query).then((result)=> {
+                resolve(result);
+              });
+        });	
+    }catch(err){
+        throw err;
+    }
+}
+function getAccountDetails(accountId){
+    try{
+        var query="SELECT * FROM account_details where account_id ="+ accountId
+        console.log(query)
+        return new Promise((resolve, reject) => {
+            connection.query(query).then((result)=> {
+                resolve(result);
+              });
+        });	
+    }catch(err){
+        throw err;
+    }
+}
+function getCustomerDetails(accountId,customerId){
+    try{
+        var query="SELECT * FROM customer_details where account_id ="+ accountId+" and customer_id="+customerId
+        console.log(query)
+        return new Promise((resolve, reject) => {
+            connection.query(query).then((result)=> {
+                resolve(result);
+              });
+        });	
+    }catch(err){
+        throw err;
+    }
+}
+function getUserDetails(accountId,customerId,userId){
+    try{
+        var query="SELECT * FROM user_details where account_id ="+ accountId+" and customer_id="+customerId+" and user_id="+userId
         console.log(query)
         return new Promise((resolve, reject) => {
             connection.query(query).then((result)=> {

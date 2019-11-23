@@ -2,7 +2,10 @@ var usermanagementDAO=require("../dao/usermanagementDAO");
 module.exports =  {
     addAccountDetails: addAccountDetails,
     addCustomerDetails : addCustomerDetails,
-    addUser : addUser
+    addUser : addUser,
+    getAccountDetails:getAccountDetails,
+    getCustomerDetails:getCustomerDetails,
+    getUserDetails:getUserDetails
 }
 function addAccountDetails(req,res){
     if(req.body.accountName!=''&&req.body.accountName!=null){
@@ -14,13 +17,13 @@ function addAccountDetails(req,res){
                     if(response.affectedRows>0){
                             finalResult={
                                 "status" : "Success",
-                                "data" : "Account created successfully",
+                                "message" : "Account created successfully",
                                 "accountId" : response.insertId
                             }
                     }else{
                         finalResult={
                             "status" : "Failure",
-                            "data" : "Error occured while creating account"
+                            "message" : "Error occured while creating account"
                         }
                     }
                     res.send(finalResult);
@@ -28,7 +31,7 @@ function addAccountDetails(req,res){
             }else{
                 finalResult={
                     "status" : "Failure",
-                    "data" : "Account Details already exists"
+                    "message" : "Account Details already exists"
                 }
                 res.send(finalResult);
             }
@@ -36,7 +39,7 @@ function addAccountDetails(req,res){
     }else{
         var finalResult={
             "status" : "Failure",
-            "data" : "Invalid parameters passed"
+            "message" : "Invalid parameters passed"
         }
         res.send(finalResult);
     }
@@ -50,14 +53,14 @@ function addCustomerDetails(req,res){
                     if(response.affectedRows>0){
                         finalResult={
                             "status" : "Success",
-                            "data" : "CustomerDetails created successfully",
+                            "message" : "CustomerDetails created successfully",
                             "accountId" : req.body.accountId,
                             "customerId" : response.insertId
                         }
                     }else{
                         finalResult={
                             "status" : "Failure",
-                            "data" : "Error occured while creating customer details"
+                            "message" : "Error occured while creating customer details"
                         }
                     }
                     res.send(finalResult);
@@ -65,7 +68,7 @@ function addCustomerDetails(req,res){
             }else{
                 finalResult={
                     "status" : "Failure",
-                    "data" : "Customer Details already exists"
+                    "message" : "Customer Details already exists"
                 }
                 res.send(finalResult);
             }
@@ -73,7 +76,7 @@ function addCustomerDetails(req,res){
     }else{
         finalResult={
             "status" : "Failure",
-            "data" : "Error occured while creating account"
+            "message" : "Error occured while creating account"
         }
         res.send(finalResult);
     }
@@ -87,7 +90,7 @@ function addUser(req,res){
                     if(response.affectedRows>0){
                         finalResult={
                             "status" : "Success",
-                            "data" : "User created successfully",
+                            "message" : "User created successfully",
                             "accountId" : req.body.accountId,
                             "customerId" : req.body.customerId,
                             "userId" : response.insertId
@@ -95,7 +98,7 @@ function addUser(req,res){
                     }else{
                         finalResult={
                             "status" : "Failure",
-                            "data" : "Error occured while creating users"
+                            "message" : "Error occured while creating users"
                         }
                     }
                     res.send(finalResult);
@@ -103,7 +106,7 @@ function addUser(req,res){
             }else{
                 finalResult={
                     "status" : "Failure",
-                    "data" : "User Details already exists"
+                    "message" : "User Details already exists"
                 }
                 res.send(finalResult);
             }
@@ -111,8 +114,59 @@ function addUser(req,res){
     }else{
         finalResult={
             "status" : "Failure",
-            "data" : "Error occured while creating users"
+            "message" : "Error occured while creating users"
         }
+        res.send(finalResult);
+    }
+}
+function getAccountDetails(req,res){
+    var finalResult={
+        "status" : "Failure",
+        "message" : "Invalid account Id"
+    }
+    if(req.query.accountId!=null&&req.query.accountId!=0){
+        return usermanagementDAO.getAccountDetails(req.query.accountId).then(function(response){
+            if(response[0]!=null){
+            res.send(response);
+            }else{
+                res.send(finalResult);
+            }
+        })
+    }else{
+        res.send(finalResult);
+    }
+}
+function getCustomerDetails(req,res){
+    var finalResult={
+        "status" : "Failure",
+        "message" : "Invalid accountId/customerId"
+    }
+    if(req.query.accountId!=null&&req.query.accountId!=0&&req.query.customerId!=null&&req.query.customerId!=0){
+        return usermanagementDAO.getCustomerDetails(req.query.accountId,req.query.customerId).then(function(response){
+            if(response[0]!=null){
+            res.send(response);
+            }else{
+                res.send(finalResult);
+            }
+        })
+    }else{
+        res.send(finalResult);
+    }
+}
+function getUserDetails(req,res){
+    var finalResult={
+        "status" : "Failure",
+        "message" : "No details available"
+    }
+    if(req.query.accountId!=null&&req.query.accountId!=0&&req.query.userId!=null&&req.query.userId!=0){
+        return usermanagementDAO.getUserDetails(req.query.accountId,req.query.customerId,req.query.userId).then(function(response){
+            if(response[0]!=null){
+            res.send(response);
+            }else{
+                res.send(finalResult);
+            }
+        })
+    }else{
         res.send(finalResult);
     }
 }
